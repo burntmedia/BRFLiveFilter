@@ -47,6 +47,7 @@ class BRF_LF_Admin_UI {
         add_meta_box( 'brf-lf-query', __( 'Query', 'brf-live-filters' ), array( __CLASS__, 'render_query_meta' ), 'brf_filter_set', 'normal', 'high' );
         add_meta_box( 'brf-lf-layout', __( 'Layout', 'brf-live-filters' ), array( __CLASS__, 'render_layout_meta' ), 'brf_filter_set', 'side', 'default' );
         add_meta_box( 'brf-lf-filters', __( 'Filters', 'brf-live-filters' ), array( __CLASS__, 'render_filters_meta' ), 'brf_filter_set', 'normal', 'default' );
+        add_meta_box( 'brf-lf-shortcode', __( 'Shortcode', 'brf-live-filters' ), array( __CLASS__, 'render_shortcode_meta' ), 'brf_filter_set', 'side', 'default' );
     }
 
     public static function render_query_meta( $post ) {
@@ -106,6 +107,15 @@ class BRF_LF_Admin_UI {
             <input id="brf_lf_custom_template" name="brf_lf_custom_template" type="text" class="widefat" value="<?php echo esc_attr( $custom_template ); ?>" placeholder="templates/custom.php" />
             <small><?php esc_html_e( 'Provide a relative path within your theme.', 'brf-live-filters' ); ?></small>
         </p>
+        <?php
+    }
+
+    public static function render_shortcode_meta( $post ) {
+        $shortcode = sprintf( '[brf_live_filters id="%d"]', absint( $post->ID ) );
+        ?>
+        <p><?php esc_html_e( 'Copy this shortcode to embed the live filter set anywhere.', 'brf-live-filters' ); ?></p>
+        <input type="text" class="widefat" readonly value="<?php echo esc_attr( $shortcode ); ?>" />
+        <p><code><?php echo esc_html( $shortcode ); ?></code></p>
         <?php
     }
 
