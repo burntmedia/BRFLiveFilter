@@ -14,6 +14,7 @@ A flexible, fast, and modern WordPress plugin for live filtering, querying, and 
   - **Filters**:
     - Taxonomies: comma-separated slugs (e.g., `category,post_tag,genre`).
     - Custom fields: one per line using `key|type|label|choices`. `type` can be `meta_text`, `meta_select`, or `meta_boolean`. Choices only apply to `meta_select` (comma-separated values).
+ - The **Shortcode** panel in the sidebar shows the exact `[brf_live_filters id="123"]` snippet with the filter set ID for easy copying.
 
 ## Shortcode Usage
 Insert the generated shortcode in content or templates:
@@ -21,6 +22,17 @@ Insert the generated shortcode in content or templates:
 ```
 [brf_live_filters id="123"]
 ```
+
+You can override settings directly in the shortcode to let editors choose the filtering context without editing the filter set:
+
+```
+[brf_live_filters id="123" post_type="event" taxonomies="category,post_tag" meta_fields="color|meta_select|Color|red,blue" posts_per_page="9" orderby="title" order="ASC"]
+```
+
+Supported override attributes:
+- `post_type`, `posts_per_page`, `orderby`, `order`, `layout`, `template`
+- `taxonomies`: comma-separated list (e.g., `category,genre`)
+- `meta_fields`: one-per-line string using `key|type|label|choices` (same as the admin field definition)
 
 ## Elementor Integration
 Use the **BRF Live Filter** widget in Elementor:
