@@ -70,7 +70,7 @@ class BRF_LF_Shortcodes {
         $taxonomies = array();
         $tax_raw    = get_post_meta( $post_id, '_brf_lf_taxonomies', true );
         if ( $tax_raw ) {
-            $taxonomies = array_map( 'sanitize_key', array_filter( array_map( 'trim', explode( ',', $tax_raw ) ) ) );
+            $taxonomies = self::parse_taxonomies( $tax_raw );
         }
 
         return array(
@@ -114,6 +114,22 @@ class BRF_LF_Shortcodes {
         return $fields;
     }
 
+    /**
+     * Parse taxonomy slugs provided via shortcode or settings.
+     *
+     * Accepts comma-separated or newline-separated values and returns a
+     * sanitized array of taxonomy slugs.
+     *
+     * @param string $raw Raw input.
+     * @return array
+     */
+    protected static function parse_taxonomies( $raw ) {
+        $normalized = str_replace( array( "\r\n", "\r", "\n" ), ',', $raw );
+        $parts      = array_map( 'trim', explode( ',', $normalized ) );
+
+        return array_values( array_filter( array_map( 'sanitize_key', $parts ) ) );
+    }
+
     protected static function merge_overrides( $settings, $atts ) {
         if ( ! empty( $atts['post_type'] ) ) {
             $settings['post_type'] = sanitize_key( $atts['post_type'] );
@@ -140,7 +156,7 @@ class BRF_LF_Shortcodes {
         }
 
         if ( ! empty( $atts['taxonomies'] ) ) {
-            $settings['taxonomies'] = array_map( 'sanitize_key', array_filter( array_map( 'trim', explode( ',', $atts['taxonomies'] ) ) ) );
+            $settings['taxonomies'] = self::parse_taxonomies( $atts['taxonomies'] );
         }
 
         if ( ! empty( $atts['meta_fields'] ) ) {

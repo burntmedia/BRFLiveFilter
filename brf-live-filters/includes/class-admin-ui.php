@@ -123,7 +123,7 @@ class BRF_LF_Admin_UI {
         $taxonomies  = get_post_meta( $post->ID, '_brf_lf_taxonomies', true );
         $meta_fields = get_post_meta( $post->ID, '_brf_lf_meta_fields', true );
         ?>
-        <p><?php esc_html_e( 'Taxonomy filters (comma-separated slugs, e.g. category,post_tag,genre).', 'brf-live-filters' ); ?></p>
+        <p><?php esc_html_e( 'Taxonomy filters (comma- or line-separated slugs, e.g. category,post_tag,genre).', 'brf-live-filters' ); ?></p>
         <textarea name="brf_lf_taxonomies" class="widefat" rows="2"><?php echo esc_textarea( $taxonomies ); ?></textarea>
         <p><?php esc_html_e( 'Custom fields definition (one per line: key|type|label|choices). Type can be meta_text, meta_select, meta_boolean. Choices only for meta_select (comma separated).', 'brf-live-filters' ); ?></p>
         <textarea name="brf_lf_meta_fields" class="widefat" rows="4" placeholder="color|meta_select|Color|red,blue\nfeatured|meta_boolean|Featured"><?php echo esc_textarea( $meta_fields ); ?></textarea>
