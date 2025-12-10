@@ -23,6 +23,10 @@
     margin-bottom: 4px;
 }
 
+.brf-lf-search input[type="search"] {
+    width: 100%;
+}
+
 .brf-lf-pill-group {
     display: flex;
     flex-wrap: wrap;
