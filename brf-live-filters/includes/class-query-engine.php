@@ -17,6 +17,7 @@ class BRF_LF_Query_Engine {
             'post_status'         => 'publish',
             'ignore_sticky_posts' => true,
             'paged'               => isset( $params['page'] ) ? absint( $params['page'] ) : 1,
+            's'                   => isset( $params['search'] ) ? sanitize_text_field( $params['search'] ) : '',
         );
 
         $tax_query = array();

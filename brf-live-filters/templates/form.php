@@ -15,6 +15,47 @@ $layout = ! empty( $settings['layout'] ) ? $settings['layout'] : 'grid';
         <input type="hidden" name="filterId" value="<?php echo esc_attr( $settings['id'] ); ?>" />
         <input type="hidden" name="page" value="1" />
         <div class="brf-lf-row">
+            <div class="brf-lf-control brf-lf-search">
+                <label for="brf-lf-search"><?php esc_html_e( 'Search', 'brf-live-filters' ); ?></label>
+                <input
+                    type="search"
+                    id="brf-lf-search"
+                    name="search"
+                    placeholder="<?php esc_attr_e( 'Search all articles', 'brf-live-filters' ); ?>"
+                />
+            </div>
+
+            <?php if ( ! empty( $settings['taxonomies'] ) ) : ?>
+                <?php foreach ( $settings['taxonomies'] as $taxonomy ) : ?>
+                    <?php
+                    $tax_obj = get_taxonomy( $taxonomy );
+                    if ( ! $tax_obj ) {
+                        continue;
+                    }
+
+                    $terms = get_terms(
+                        array(
+                            'taxonomy'   => $taxonomy,
+                            'hide_empty' => true,
+                        )
+                    );
+
+                    if ( is_wp_error( $terms ) ) {
+                        continue;
+                    }
+                    ?>
+                    <div class="brf-lf-control">
+                        <label for="brf-lf-tax-<?php echo esc_attr( $taxonomy ); ?>"><?php echo esc_html( $tax_obj->labels->name ); ?></label>
+                        <select id="brf-lf-tax-<?php echo esc_attr( $taxonomy ); ?>" name="tax[<?php echo esc_attr( $taxonomy ); ?>]">
+                            <option value=""><?php printf( esc_html__( 'All %s', 'brf-live-filters' ), esc_html( $tax_obj->labels->name ) ); ?></option>
+                            <?php foreach ( $terms as $term ) : ?>
+                                <option value="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+
             <div class="brf-lf-control">
                 <label for="brf-lf-orderby"><?php esc_html_e( 'Sort By', 'brf-live-filters' ); ?></label>
                 <select id="brf-lf-orderby" name="orderby">
@@ -31,35 +72,6 @@ $layout = ! empty( $settings['layout'] ) ? $settings['layout'] : 'grid';
                 </select>
             </div>
         </div>
-
-        <?php if ( ! empty( $settings['taxonomies'] ) ) : ?>
-            <?php foreach ( $settings['taxonomies'] as $taxonomy ) : ?>
-                <?php
-                $tax_obj = get_taxonomy( $taxonomy );
-                if ( ! $tax_obj ) {
-                    continue;
-                }
-
-                $terms = get_terms(
-                    array(
-                        'taxonomy'   => $taxonomy,
-                        'hide_empty' => true,
-                    )
-                );
-                ?>
-                <fieldset class="brf-lf-fieldset">
-                    <legend><?php echo esc_html( $tax_obj->labels->name ); ?></legend>
-                    <div class="brf-lf-pill-group">
-                        <?php foreach ( $terms as $term ) : ?>
-                            <label class="brf-lf-pill">
-                                <input type="checkbox" name="tax[<?php echo esc_attr( $taxonomy ); ?>][]" value="<?php echo esc_attr( $term->term_id ); ?>" />
-                                <span><?php echo esc_html( $term->name ); ?></span>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                </fieldset>
-            <?php endforeach; ?>
-        <?php endif; ?>
 
         <?php if ( ! empty( $settings['meta_fields'] ) ) : ?>
             <div class="brf-lf-meta">

@@ -30,6 +30,7 @@ class BRF_LF_Ajax {
             'page'       => isset( $_POST['page'] ) ? absint( $_POST['page'] ) : 1,
             'orderby'    => isset( $_POST['orderby'] ) ? sanitize_key( wp_unslash( $_POST['orderby'] ) ) : '',
             'order'      => isset( $_POST['order'] ) ? sanitize_text_field( wp_unslash( $_POST['order'] ) ) : '',
+            'search'     => isset( $_POST['search'] ) ? sanitize_text_field( wp_unslash( $_POST['search'] ) ) : '',
         );
 
         if ( ! empty( $_POST['tax'] ) && is_array( $_POST['tax'] ) ) {
